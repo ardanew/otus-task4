@@ -75,7 +75,7 @@ auto print_ip(const T &s, std::ostream& os = std::cout, [[maybe_unused]] std::in
 template<size_t IDX, size_t SZ, typename T>
 void tuple_print(const T& t, std::ostream& os = std::cout)
 {
-	os << get<IDX>(t);
+	os << std::get<IDX>(t);
 	if constexpr (IDX < SZ - 1)
 	{
 		os << ".";
