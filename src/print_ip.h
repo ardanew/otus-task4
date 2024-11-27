@@ -88,14 +88,12 @@ void tuple_print(const T& t, std::ostream& os = std::cout)
 /// \param t tuple
 /// \param os output stream
 /// \param fake unused
-/// \details tuple types must be the same, or static assert will be invoked
-template <typename T,
-	class E = std::enable_if_t< is_tuple_v<T> >
+/// \details tuple types must be the same
+template <typename ...Args,
+	class E = std::enable_if_t< is_tuple_v<std::tuple<Args...>> && check_tuple_types_v<Args...> >
 >
-void print_ip(const T& t, std::ostream& os = std::cout, [[maybe_unused]] std::integral_constant<int, 3> fake = {})
+void print_ip(const std::tuple<Args...>& t, std::ostream& os = std::cout, [[maybe_unused]] std::integral_constant<int, 3> fake = {})
 {
-	check_tuple_types(t);
-
-	constexpr size_t SZ = std::tuple_size<T>();
-	tuple_print<0, SZ, T>(t, os);
+	constexpr size_t SZ = std::tuple_size<std::tuple<Args...>>();
+	tuple_print<0, SZ, std::tuple<Args...>>(t, os);
 }

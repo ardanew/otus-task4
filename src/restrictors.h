@@ -45,22 +45,22 @@ constexpr bool is_tuple_v = is_tuple<T>::value;
 
 // -----------
 
+template<typename ...Args>
+struct check_tuple_types;
+
 template<typename ONE>
-constexpr void check_tuple_types_helper()
+struct check_tuple_types<ONE>
 {
-}
+	static constexpr bool value = true;
+};
 
 template<typename F, typename S, typename ...TailArgs>
-constexpr void check_tuple_types_helper()
+struct check_tuple_types<F, S, TailArgs...>
 {
-	if constexpr( ! std::is_same_v<F, S> )
-		static_assert(false, "Tuple arguments must be the same type");
-	check_tuple_types_helper<S, TailArgs...>();
-}
+	static constexpr bool value = std::is_same_v<F, S> ?
+		check_tuple_types<S, TailArgs...>::value :
+		false;
+};
 
 template<typename ...Args>
-constexpr void check_tuple_types(const std::tuple<Args...>& t)
-{
-	check_tuple_types_helper<Args...>();
-}
-
+constexpr bool check_tuple_types_v = check_tuple_types<Args...>::value;

@@ -60,6 +60,10 @@ TEST(PrintIp, AllTasks) {
 	{
 		std::stringstream ss;
 		print_ip(std::make_tuple(123, 456, 789, 0), ss); // 123.456.789.0
+
+		// this will fail
+		//print_ip(std::make_tuple("123", 456.5, 789, 0), ss); // 123.456.789.0
+
 		std::getline(ss, s, '\n');
 		EXPECT_EQ("123.456.789.0", s);
 	}
